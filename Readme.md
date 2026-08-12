@@ -1,4 +1,4 @@
-# SecureForGood — AI-Powered Compliance Auditing for Nonprofits and Under-Resourced Organizations
+# SecureForGood — AI-Powered Compliance Auditing for Nonprofits 
 
 > Automates enterprise-grade security auditing for organizations that cannot afford it. Scans Windows security configurations, maps findings to NIST SP 800-53 controls using GPT-4, identifies compliance gaps, and generates plain-English reports for both technical teams and nonprofit leadership.
 
