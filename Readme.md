@@ -1,4 +1,4 @@
-# SecureForGood — AI-Powered Compliance Auditing for Nonprofits 
+# SecureForGood — AI-Powered Compliance Auditing for Nonprofits
 
 > Automates enterprise-grade security auditing for organizations that cannot afford it. Scans Windows security configurations, maps findings to NIST SP 800-53 controls using GPT-4, identifies compliance gaps, and generates plain-English reports for both technical teams and nonprofit leadership.
 
@@ -68,9 +68,9 @@ phase1/
 ---
 
 ### Phase 2 — Windows Security Scanner
-**Status: In Progress**
+**Status: Complete**
 
-Reads Windows Security Event Logs and Active Directory configurations, extracts structured security findings as normalized JSON. Covers failed logons (4625), privilege escalation (4672), policy changes (4719), account lockouts (4740), password policy, and AD group memberships.
+Reads Windows Security Event Logs and Active Directory configurations, extracts structured security findings as normalized JSON. Covers failed logons (4625), privilege escalation (4672), policy changes (4719), account lockouts (4740), password policy, and AD group memberships. Runs in mock mode on non-Windows systems for testing.
 
 ```
 phase2/
@@ -82,21 +82,20 @@ phase2/
 ---
 
 ### Phase 3 — LLM Control Mapper
-**Status: Planned**
+**Status: Complete**
 
-Uses GPT-4 to reason over each finding and identify the most relevant NIST SP 800-53 control IDs. Returns confidence scores (0.0 to 1.0) and natural-language rationale for each mapping. Results are cached against the Phase 1 SQLite database.
+Uses GPT-4 to reason over each finding and identify the most relevant NIST SP 800-53 control IDs. Returns confidence scores (0.0 to 1.0) and natural-language rationale for each mapping. Results are cached in SQLite to avoid redundant API calls.
 
 ```
 phase3/
 ├── control_mapper.py
-├── prompt_templates.py
-└── cache_layer.py
+└── prompt_templates.py
 ```
 
 ---
 
 ### Phase 4 — Compliance Gap Analyzer
-**Status: Planned**
+**Status: Complete**
 
 Compares mapped findings against a required-control baseline, flags controls with missing or insufficient evidence, and computes a CVSS-aligned risk score per gap.
 
@@ -110,31 +109,25 @@ phase4/
 ---
 
 ### Phase 5 — Agentic Workflow Layer
-**Status: Planned**
+**Status: Complete**
 
-Builds a LangChain multi-agent pipeline that autonomously orchestrates Phases 2 through 4 end to end without manual intervention. Agents: ScannerAgent, MapperAgent, GapAnalyzerAgent, OrchestratorAgent.
+Builds a LangChain multi-agent pipeline that autonomously orchestrates Phases 2 through 6 end to end without manual intervention. The OrchestratorAgent coordinates scanning, mapping, gap analysis, and report generation as a single autonomous pipeline.
 
 ```
 phase5/
-├── orchestrator.py
-├── scanner_agent.py
-├── mapper_agent.py
-└── gap_agent.py
+└── orchestrator.py
 ```
 
 ---
 
 ### Phase 6 — Intelligence Report Generator
-**Status: Planned**
+**Status: Complete**
 
-Uses GPT-4 to write professional audit narratives and generates both a structured JSON report for technical teams and a formatted PDF for nonprofit directors and board members. Sections include Executive Summary, Control Status, Gap Analysis, Risk Heat Map, and Remediation Roadmap.
+Uses GPT-4 to write a plain-English executive summary and generates both a structured JSON report for technical teams and a formatted PDF for nonprofit directors and board members. PDF sections include Executive Summary, Compliance Scorecard, and Gap Analysis Detail with color-coded risk levels.
 
 ```
 phase6/
-├── report_generator.py
-├── narrative_writer.py
-├── pdf_builder.py
-└── templates/
+└── report_generator.py
 ```
 
 ---
@@ -165,8 +158,8 @@ phase6/
 ### Installation
 
 ```bash
-git clone https://github.com/Sreenidhi15/ai-security-control-analyzer.git
-cd ai-security-control-analyzer
+git clone https://github.com/Sreenidhi15/SecureForGood.git
+cd SecureForGood
 
 python -m venv venv
 venv\Scripts\activate
@@ -182,6 +175,12 @@ Copy `.env.example` to `.env` and add your OpenAI API key.
 python phase1/nist_parser.py --refresh
 python phase1/nist_parser.py --lookup AC-2
 python phase1/nist_parser.py --search "account management"
+```
+
+### Run the Full Pipeline (Agentic Mode)
+
+```bash
+python phase5/orchestrator.py --baseline moderate --output reports/
 ```
 
 ---
@@ -224,24 +223,13 @@ python phase1/nist_parser.py --search "account management"
 ## Roadmap
 
 - [x] Phase 1: NIST SP 800-53 control database with SQLite/FTS5
-- [ ] Phase 2: Windows Event Log and AD scanner
-- [ ] Phase 3: GPT-4 control mapping with confidence scoring
-- [ ] Phase 4: Gap analysis and CVSS-aligned risk scoring
-- [ ] Phase 5: LangChain agentic orchestration layer
-- [ ] Phase 6: JSON and PDF intelligence report generation
+- [x] Phase 2: Windows Event Log and AD scanner
+- [x] Phase 3: GPT-4 control mapping with confidence scoring
+- [x] Phase 4: Gap analysis and CVSS-aligned risk scoring
+- [x] Phase 5: LangChain agentic orchestration layer
+- [x] Phase 6: JSON and PDF intelligence report generation
 - [ ] Stretch: ISO 27001 and SOC 2 dual-mapping support
 - [ ] Stretch: GitHub Actions CI/CD for automated test runs
-
----
-
-## Author
-
-**Sreenidhi Ramani**
-M.S. Electrical and Computer Engineering, Northeastern University
-
-Research Assistant, CactiLab — firmware security, embedded vulnerability research, fuzzing pipelines
-
-[GitHub](https://github.com/Sreenidhi15) · [LinkedIn](https://linkedin.com/in/sreenidhi-ramani)
 
 ---
 
