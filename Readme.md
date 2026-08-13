@@ -56,7 +56,6 @@ A professional security audit costs tens of thousands of dollars. This tool make
 ## Project Phases
 
 ### Phase 1 — NIST Control Database
-**Status: Complete**
 
 Downloads and parses the official NIST SP 800-53 Rev 5 OSCAL JSON, stores 1000+ controls in SQLite with FTS5 full-text search, and exposes a ControlDatabase class used by all downstream phases.
 
@@ -68,7 +67,6 @@ phase1/
 ---
 
 ### Phase 2 — Windows Security Scanner
-**Status: Complete**
 
 Reads Windows Security Event Logs and Active Directory configurations, extracts structured security findings as normalized JSON. Covers failed logons (4625), privilege escalation (4672), policy changes (4719), account lockouts (4740), password policy, and AD group memberships. Runs in mock mode on non-Windows systems for testing.
 
@@ -82,7 +80,6 @@ phase2/
 ---
 
 ### Phase 3 — LLM Control Mapper
-**Status: Complete**
 
 Uses GPT-4 to reason over each finding and identify the most relevant NIST SP 800-53 control IDs. Returns confidence scores (0.0 to 1.0) and natural-language rationale for each mapping. Results are cached in SQLite to avoid redundant API calls.
 
@@ -95,7 +92,6 @@ phase3/
 ---
 
 ### Phase 4 — Compliance Gap Analyzer
-**Status: Complete**
 
 Compares mapped findings against a required-control baseline, flags controls with missing or insufficient evidence, and computes a CVSS-aligned risk score per gap.
 
@@ -109,7 +105,6 @@ phase4/
 ---
 
 ### Phase 5 — Agentic Workflow Layer
-**Status: Complete**
 
 Builds a LangChain multi-agent pipeline that autonomously orchestrates Phases 2 through 6 end to end without manual intervention. The OrchestratorAgent coordinates scanning, mapping, gap analysis, and report generation as a single autonomous pipeline.
 
@@ -121,7 +116,6 @@ phase5/
 ---
 
 ### Phase 6 — Intelligence Report Generator
-**Status: Complete**
 
 Uses GPT-4 to write a plain-English executive summary and generates both a structured JSON report for technical teams and a formatted PDF for nonprofit directors and board members. PDF sections include Executive Summary, Compliance Scorecard, and Gap Analysis Detail with color-coded risk levels.
 
